@@ -1,0 +1,8 @@
+database/test.sqlite3
+data.png
+memo
+.idea
+Procfile
+go.mod
+go.sum
+app_origin.config

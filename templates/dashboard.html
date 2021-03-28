@@ -1,0 +1,164 @@
+{{ define "content" }}
+ <div class="container">
+  <style>
+   #dashboard_div{
+    width: 100%;
+    border: 1px solid #ccc;
+   }
+   #chart_div{
+    height:405px;
+    border-bottom: 1px solid #ccc;
+   }
+   #filter_div{
+    height:70px;
+   }
+  </style>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+   google.charts.load('current', {packages: ['corechart', 'controls', 'table']});
+   google.charts.setOnLoadCallback(controlsAndDashboards);
+
+   function controlsAndDashboards(color) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', '日');
+    data.addColumn('number', 'RP');
+    {{range $var := .LogData}}
+    date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+    data.addRow([date, {{.Rp}}]);
+    {{end}}
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+    var chartRangeFilter = new google.visualization.ControlWrapper({
+     controlType: 'ChartRangeFilter',
+     containerId: 'filter_div',
+     options: {
+      filterColumnIndex: 0,
+      ui: {
+       chartType: 'ComboChart',
+       chartOptions: {
+        colors: ['rgb(0, 123, 255)'],
+        height: 70,
+       }
+      }
+     }
+    });
+    var lineChart = new google.visualization.ChartWrapper({
+     chartType: 'LineChart',
+     containerId: 'chart1_div',
+     options: {
+      height: 400,
+      hAxis: {
+       textPosition: 'none'
+      },
+      colors: ['rgb(0, 123, 255)']
+     }
+    });
+    var table = new google.visualization.ChartWrapper({
+     chartType: 'Table',
+     containerId: 'chart6_div',
+     options: {
+      width:1000,
+     }
+    });
+    dashboard.bind(chartRangeFilter, [lineChart, table]);
+    dashboard.draw(data);
+   }
+
+   function changeValue(value){
+    var data = new google.visualization.DataTable();
+    var color
+    var date
+    data.addColumn('date', '日');
+    color = 'rgb(0, 123, 255)'
+    if (value === "Rp") {
+     data.addColumn('number', 'RP');
+     {{range $var := .LogData}}
+     date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+     data.addRow([date, {{.Rp}}]);
+     {{end}}
+    }
+    if (value === "RpUp") {
+     data.addColumn('number', 'RP上昇量');
+     color = 'rgb(40, 167, 69)'
+     {{range $var := .LogData}}
+     date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+     data.addRow([date, {{.RpUp}}]);
+     {{end}}
+    }
+    if (value === "KillUp") {
+     data.addColumn('number', 'キル数');
+     color = 'rgb(220, 53, 69)'
+     {{range $var := .LogData}}
+     date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+     data.addRow([date, {{.KillUp}}]);
+     {{end}}
+    }
+    if (value === "DamageUp") {
+     data.addColumn('number', 'ダメージ量');
+     color = 'rgb(108, 117, 125)'
+     {{range $var := .LogData}}
+     date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+     data.addRow([date, {{.DamageUp}}]);
+     {{end}}
+    }
+    if (value === "WinsUp") {
+     data.addColumn('number', '勝利数');
+     color = 'rgb(23, 162, 184)'
+     {{range $var := .LogData}}
+     date = new Date({{ .Year }}, {{ .Month }} , {{ .Date}});
+     data.addRow([date, {{.WinsUp}}]);
+     {{end}}
+    }
+    var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+    var chartRangeFilter = new google.visualization.ControlWrapper({
+     controlType: 'ChartRangeFilter',
+     containerId: 'filter_div',
+     options: {
+      filterColumnIndex: 0,
+      ui: {
+       chartType: 'ComboChart',
+       chartOptions: {
+        colors: [color],
+        height: 70,
+       }
+      }
+     }
+    });
+    var lineChart = new google.visualization.ChartWrapper({
+     chartType: 'LineChart',
+     containerId: 'chart1_div',
+     options: {
+      height: 400,
+      hAxis: {
+       textPosition: 'none'
+      },
+      colors: [color]
+     }
+    });
+    var table = new google.visualization.ChartWrapper({
+     chartType: 'Table',
+     containerId: 'chart6_div',
+     options: {
+      width:1000,
+     }
+    });
+    dashboard.bind(chartRangeFilter, [lineChart, table]);
+    dashboard.draw(data);
+   }
+  </script>
+  <h1 class="mt-4 mb-3"> {{ .LogUser }} </h1>
+  <div class="test3"> <button class="btn btn-outline-primary" onclick="changeValue('Rp');">RP</button> <button class="btn btn-outline-success" onclick="changeValue('RpUp');">RP上昇量</button> <button class="btn btn-outline-danger" onclick="changeValue('KillUp');">キル数</button> <button class="btn btn-outline-secondary" onclick="changeValue('DamageUp');">ダメージ量</button> <button class="btn btn-outline-info" onclick="changeValue('WinsUp');">勝利数</button> </div>
+  <div class="row">
+   <div class="col-lg-9 test3">
+    <div id="dashboard_div">
+     <div id="chart_div">
+      <div id="chart1_div"></div>
+     </div>
+     <div id="filter_div"></div>
+    </div>
+   </div>
+   <div class="col-lg-3">
+    <div id="chart6_div" class="test"></div>
+   </div>
+  </div>
+ </div>
+{{ end }}

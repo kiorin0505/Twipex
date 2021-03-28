@@ -1,0 +1,35 @@
+{{ define "content"}}
+  <header>
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active" style="background-image: url('/static/images/apex.png')">
+          <div class="carousel-caption">
+            <h3>Twipex</h3>
+            <p>Apexプレイヤーのためのデータ記録アプリ</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <h1 class="my-4">Apexのデータを記録</h1>
+    <div class="row">
+      <div class="col-lg-6">
+        <p>Twipexはこれらの情報をあなたのTwitterに投稿します。</p>
+        <ul>
+          <li>使用しているプラットフォーム、アイコン</li>
+          <li>現在のランク</li>
+          <li>RPの変動、次のランクまでのポイント</li>
+          <li>アクティブなレジェンドのキル、ダメージの上昇量</li>
+        </ul>
+      </div>
+      <div class="col-lg-6"> <img class="img-fluid rounded" src="/static/images/howto_sample.png" alt=""> </div>
+    </div>
+    <hr>
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <p>このアプリは<a href="https://tracker.gg/apex">APEX LEGENDS TRACKER API</a>を使用しています。</p>
+      </div>
+    </div>
+  </div>
+{{ end }}

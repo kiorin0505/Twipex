@@ -1,0 +1,198 @@
+{{ define "content"}}
+    <div class="container">
+        <h1 class="mt-4 mb-3">設定 </h1>
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <h3>MainSettings</h3>
+                <form name="sentMessage" id="contactForm" action="/create" method="POST"> <a href=" /howto">使用前にご確認ください</a>
+                    <div class="control-group form-group">
+                        <div class="controls"> <label>Platform:</label> <select name="platform" class="form-control" id="name">
+                                {{if eq .Platform "origin" }}
+                                    <option value="origin"  selected >Origin</option>
+                                {{else}}
+                                    <option value="origin">Origin</option>
+                                {{end}}
+                                {{if eq .Platform "psn" }}
+                                    <option value="psn"  selected >PSN</option>
+                                {{else}}
+                                    <option value="psn">PSN</option>
+                                {{end}}
+                                {{if eq .Platform "xbl" }}
+                                    <option value="xbl"  selected >XBOX</option>
+                                {{else}}
+                                    <option value="xbl" }>XBOX</option>
+                                {{end}}
+                            </select>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls"> <label>ID:</label> <input type="text" class="form-control" id="name" name="id" required value="{{.UserId}}" />
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls"> <label>レジェンド:</label> <select name="legend" class="form-control" id="name">
+                                {{if eq .Legend "Octane" }}
+                                    <option value="Octane"  selected >オクタン</option>
+                                {{else}}
+                                    <option value="Octane">オクタン</option>
+                                {{end}}
+                                {{if eq .Legend "Crypto" }}
+                                    <option value="Crypto"  selected >クリプト</option>
+                                {{else}}
+                                    <option value="Crypto">クリプト</option>
+                                {{end}}
+                                {{if eq .Legend "Caustic" }}
+                                    <option value="Caustic"  selected >コースティック</option>
+                                {{else}}
+                                    <option value="Caustic" >コースティック</option>
+                                {{end}}
+                                {{if eq .Legend "Gibraltar" }}
+                                    <option value="Gibraltar"  selected >ジブラルタル</option>
+                                {{else}}
+                                    <option value="Gibraltar" >ジブラルタル</option>
+                                {{end}}
+                                {{if eq .Legend "Bangalore" }}
+                                    <option value="Bangalore"  selected >バンガロール</option>
+                                {{else}}
+                                    <option value="Bangalore" >バンガロール</option>
+                                {{end}}
+                                {{if eq .Legend "Pathfinder" }}
+                                    <option value="Pathfinder"  selected >パスファインダー</option>
+                                {{else}}
+                                    <option value="Pathfinder" >パスファインダー</option>
+                                {{end}}
+                                {{if eq .Legend "Bloodhound" }}
+                                    <option value="Bloodhound"  selected >ブラッドハウンド</option>
+                                {{else}}
+                                    <option value="Bloodhound" >ブラッドハウンド</option>
+                                {{end}}
+                                {{if eq .Legend "Horizon" }}
+                                    <option value="Horizon"  selected >ホライゾン</option>
+                                {{else}}
+                                    <option value="Horizon">ホライゾン</option>
+                                {{end}}
+                                {{if eq .Legend "Mirage" }}
+                                    <option value="Mirage"  selected >ミラージュ</option>
+                                {{else}}
+                                    <option value="Mirage" >ミラージュ</option>
+                                {{end}}
+                                {{if eq .Legend "Lifeline" }}
+                                    <option value="Lifeline"  selected >ライフライン</option>
+                                {{else}}
+                                    <option value="Lifeline" >ライフライン</option>
+                                {{end}}
+                                {{if eq .Legend "Rampart" }}
+                                    <option value="Rampart"  selected >ランパート</option>
+                                {{else}}
+                                    <option value="Rampart" >ランパート</option>
+                                {{end}}
+                                {{if eq .Legend "Wraith" }}
+                                    <option value="Wraith"  selected >レイス</option>
+                                {{else}}
+                                    <option value="Wraith" >レイス</option>
+                                {{end}}
+                                {{if eq .Legend "Revenant" }}
+                                    <option value="Revenant"  selected >レヴナント</option>
+                                {{else}}
+                                    <option value="Revenant" >レヴナント</option>
+                                {{end}}
+                                {{if eq .Legend "Loba" }}
+                                    <option value="Loba"  selected >ローバ</option>
+                                {{else}}
+                                    <option value="Loba" >ローバ</option>
+                                {{end}}
+                                {{if eq .Legend "Wattson" }}
+                                    <option value="Wattson"  selected >ワットソン</option>
+                                {{else}}
+                                    <option value="Wattson" >ワットソン</option>
+                                {{end}}
+                            </select>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls"> <label>投稿時間:</label> <select name="time" class="form-control" id="name" required data-validation-required-message="Please enter your name.">
+                                {{if eq .SendTime "am0" }}
+                                    <option value="am0"  selected >AM:00</option>
+                                {{else}}
+                                    <option value="am0">AM:00</option>
+                                {{end}}
+
+                                {{if eq .SendTime "am3" }}
+                                    <option value="am3"  selected >AM:03</option>
+                                {{else}}
+                                    <option value="am3">AM:03</option>
+                                {{end}}
+
+                                {{if eq .SendTime "am6" }}
+                                    <option value="am6"  selected >AM:06</option>
+                                {{else}}
+                                    <option value="am6">AM:06</option>
+                                {{end}}
+
+                                {{if eq .SendTime "am9" }}
+                                    <option value="am9"  selected >AM:09</option>
+                                {{else}}
+                                    <option value="am9">AM:09</option>
+                                {{end}}
+
+                                {{if eq .SendTime "pm0" }}
+                                    <option value="pm0"  selected >PM:00</option>
+                                {{else}}
+                                    <option value="pm0">PM:00</option>
+                                {{end}}
+
+                                {{if eq .SendTime "pm3" }}
+                                    <option value="pm3"  selected >PM:03</option>
+                                {{else}}
+                                    <option value="pm3">PM:03</option>
+                                {{end}}
+
+                                {{if eq .SendTime "pm6" }}
+                                    <option value="pm6"  selected >PM:06</option>
+                                {{else}}
+                                    <option value="pm6">PM:06</option>
+                                {{end}}
+
+                                {{if eq .SendTime "pm9" }}
+                                    <option value="pm9"  selected >PM:09</option>
+                                {{else}}
+                                    <option value="pm9">PM:09</option>
+                                {{end}}
+
+                                {{if eq .SendTime "week" }}
+                                    <option value="week"  selected >毎週月曜日(AM0)</option>
+                                {{else}}
+                                    <option value="week">毎週月曜日(AM0)</option>
+                                {{end}}
+                            </select>
+                            <p class="help-block"></p>
+                        </div>
+                    </div>
+                    <div class="form-group"> <label>投稿間隔:</label>
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio"> {{if or (eq .SendInterval "day") (eq .SendInterval "")}} <input type="radio" name="sendinterval" value="day" class="custom-control-input" id="custom-radio-1" checked> {{ else }} <input type="radio" name="sendinterval" value="day" class="custom-control-input" id="custom-radio-1"> {{ end }} <label class="custom-control-label" for="custom-radio-1">毎日</label> </div>
+                            <div class="custom-control custom-radio"> {{if eq .SendInterval "week"}} <input type="radio" name="sendinterval" value="week" class="custom-control-input" id="custom-radio-2" checked> {{ else }} <input type="radio" name="sendinterval" value="week" class="custom-control-input" id="custom-radio-2"> {{ end }} <label class="custom-control-label" for="custom-radio-2">毎週 (月曜日に投稿されます。データは毎日取得されます。)</label> </div>
+                        </div>
+                    </div>
+                    <h3>ExtraSettings</h3>
+                    <div class="form-group "> <label>勝利数表示:</label>
+                        <div class="form-inline">
+                            <div class="custom-control custom-radio"> {{if or (eq .Winad "on") (eq .Winad "")}} <input type="radio" name="winad" value="on" class="custom-control-input" id="custom-radio-3" checked> {{ else }} <input type="radio" name="winad" value="on" class="custom-control-input" id="custom-radio-3"> {{ end }} <label class="custom-control-label" for="custom-radio-3">ON</label> </div>
+                            <div class="custom-control custom-radio"> {{if eq .Winad "week"}} <input type="radio" name="winad" value="off" class="custom-control-input" id="custom-radio-4" checked> {{ else }} <input type="radio" name="winad" value="off" class="custom-control-input" id="custom-radio-4"> {{ end }} <label class="custom-control-label" for="custom-radio-4">OFF</label> </div>
+                        </div>
+                    </div>
+                    <div class="form-group "> <label>プレデター (<a href=" /howto">使用前にご確認ください</a>):</label>
+                        <div class="form-inline">
+                            <div class="custom-control custom-checkbox"> {{if eq .Predator "on"}} <input type="checkbox" name="predator" value="on" class="custom-control-input" id="custom-check-1" checked> {{ else }} <input type="checkbox" name="predator" value="on" class="custom-control-input" id="custom-check-1"> {{ end }} <label class="custom-control-label" for="custom-check-1"></label> </div>
+                        </div>
+                    </div>
+                    <div id="success">
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="sendMessageButton">保存</button> </form>
+            </div>
+        </div>
+    </div>
+{{ end }}
