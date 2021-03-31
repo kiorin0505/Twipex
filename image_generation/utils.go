@@ -16,7 +16,7 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-func OpenImage(imagepath string) image.Image {
+func openImage(imagepath string) image.Image {
 	file, err := ioutil.ReadFile("image_generation/material/" + imagepath)
 	if err != nil {
 		log.Printf("error for %v", err)
@@ -28,7 +28,7 @@ func OpenImage(imagepath string) image.Image {
 	return flagImage
 }
 
-func SetFont() *truetype.Font {
+func setFont() *truetype.Font {
 	font, err := truetype.Parse(gobold.TTF)
 	if err != nil {
 		log.Printf("error for %v", err)
@@ -36,13 +36,13 @@ func SetFont() *truetype.Font {
 	return font
 }
 
-func SetSize(size float64, dc *gg.Context) {
-	font := SetFont()
+func setSize(size float64, dc *gg.Context) {
+	font := setFont()
 	face := truetype.NewFace(font, &truetype.Options{Size: size})
 	dc.SetFontFace(face)
 }
 
-func GetAvatar(url string) {
+func getAvatar(url string) {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Printf("error for %v", err)
@@ -58,9 +58,9 @@ func GetAvatar(url string) {
 	io.Copy(file, response.Body)
 }
 
-func GetTime() time.Time {
+func getTime() time.Time {
 	t := time.Now()
-	cfg, err := ini.Load("app.config")
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		log.Printf("file=twitter/main.go/13 action=loadcondig error=%v", err)
 	}

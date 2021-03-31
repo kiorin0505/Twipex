@@ -56,14 +56,14 @@ type PlayerLogData struct {
 	Date      int
 }
 
-type ContactData struct {
+type contactData struct {
 	gorm.Model
 	Name    string
 	Address string
 	Content string
 }
 
-func OpenDb() *gorm.DB {
+func Open() *gorm.DB {
 	db, err := gorm.Open("sqlite3", "./database/test.sqlite3")
 	if err != nil {
 		log.Panicf("Failed to Open DataBase: %v", err)
@@ -71,39 +71,39 @@ func OpenDb() *gorm.DB {
 	return db
 }
 
-func DbInit() {
-	db := OpenDb()
+func Init() {
+	db := Open()
 	db.AutoMigrate(&UserData{})
 	db.AutoMigrate(&PlayerLogData{})
-	db.AutoMigrate(&ContactData{})
+	db.AutoMigrate(&contactData{})
 	defer db.Close()
 }
 
-func DbGetPostUser(now string) []UserData {
-	db := OpenDb()
+func GetPostUser(now string) []UserData {
+	db := Open()
 	var userdata []UserData
 	db.Find(&userdata, "send_time = ?", now)
 	db.Close()
 	return userdata
 }
 
-func DbGetOne(twitterid string) UserData {
-	db := OpenDb()
+func GetOne(twitterid string) UserData {
+	db := Open()
 	var userdata UserData
 	db.First(&userdata, "account_id = ?", twitterid)
 	db.Close()
 	return userdata
 }
 
-func DbInitInsert(token, secret, twitterid, twittername string) {
-	db := OpenDb()
+func InitInsert(token, secret, twitterid, twittername string) {
+	db := Open()
 	db.Create(&UserData{AccountId: twitterid, AccountName: twittername, Token: token, Secret: secret})
 	defer db.Close()
 
 }
 
-func DbUpdateProfile(twitterid, platform, id, legend, winad, time, sendinterval, predator string) {
-	db := OpenDb()
+func UpdateProfile(twitterid, platform, id, legend, winad, time, sendinterval, predator string) {
+	db := Open()
 	var userdata UserData
 	db.First(&userdata, "account_id = ?", twitterid)
 	userdata.Platform = platform
@@ -117,8 +117,8 @@ func DbUpdateProfile(twitterid, platform, id, legend, winad, time, sendinterval,
 	db.Close()
 }
 
-func DbUpdateUserData(twitterid, beforelegend, lastsenddate, rankname, rp, kills, damage, wins string) {
-	db := OpenDb()
+func UpdateUserData(twitterid, beforelegend, lastsenddate, rankname, rp, kills, damage, wins string) {
+	db := Open()
 	var userdata UserData
 	db.First(&userdata, "account_id = ?", twitterid)
 	userdata.Rank = rankname
@@ -132,8 +132,8 @@ func DbUpdateUserData(twitterid, beforelegend, lastsenddate, rankname, rp, kills
 	defer db.Close()
 }
 
-func DbCheck(twitterid string) bool {
-	db := OpenDb()
+func Check(twitterid string) bool {
+	db := Open()
 	var userdata UserData
 	db.First(&userdata, "account_id = ?", twitterid)
 	if userdata.AccountId == "" {
@@ -142,8 +142,8 @@ func DbCheck(twitterid string) bool {
 	return true
 }
 
-func DbLogInsert(twitterid, rp, rpup, killup, damageup, winsup string, makedate time.Time) {
-	db := OpenDb()
+func LogInsert(twitterid, rp, rpup, killup, damageup, winsup string, makedate time.Time) {
+	db := Open()
 	t := makedate
 	intrp, _ := strconv.Atoi(rp)
 	intrpup, _ := strconv.Atoi(rpup)
@@ -158,22 +158,22 @@ func DbLogInsert(twitterid, rp, rpup, killup, damageup, winsup string, makedate 
 	defer db.Close()
 }
 
-func DbLogGet(twitterid string) []PlayerLogData {
-	db := OpenDb()
+func LogGet(twitterid string) []PlayerLogData {
+	db := Open()
 	var playerlogdata []PlayerLogData
 	db.Find(&playerlogdata, "account_id = ?", twitterid)
 	defer db.Close()
 	return playerlogdata
 }
 
-func DbCreateMessage(name, address, content string) {
-	db := OpenDb()
-	db.Create(&ContactData{Name: name, Address: address, Content: content})
+func CreateMessage(name, address, content string) {
+	db := Open()
+	db.Create(&contactData{Name: name, Address: address, Content: content})
 	defer db.Close()
 }
 
-func DbUpdateLastMade(twitterid, lastrp, lastkills, lastdamage, lastwins, lastdate string) {
-	db := OpenDb()
+func UpdateLastMade(twitterid, lastrp, lastkills, lastdamage, lastwins, lastdate string) {
+	db := Open()
 	var userdata UserData
 	db.First(&userdata, "account_id = ?", twitterid)
 	userdata.LastMadeRp, _ = strconv.Atoi(lastrp)

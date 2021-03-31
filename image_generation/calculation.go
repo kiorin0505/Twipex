@@ -5,13 +5,13 @@ import (
 	"strconv"
 )
 
-func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
+func calculateValues(newdata apexLawData, beforedata database.UserData) valuesChange {
 	for i := 0; i < len(newdata.Data.Segments); i++ {
 		if newdata.Data.Segments[i].Metadata.Name == beforedata.Legend {
 			if beforedata.Legend != beforedata.BeforeLegend {
 				rpchange := int(newdata.Data.Segments[0].Stats.Rankscore.Value) - (beforedata.Rp)
 				rpchangesend := int(newdata.Data.Segments[0].Stats.Rankscore.Value) - (beforedata.LastMadeRp)
-				rkdw := RKDW{
+				rkdw := valuesChange{
 					rankname:     newdata.Data.Segments[0].Stats.Rankscore.Rankmetadata.Rankname,
 					rp:           strconv.Itoa(int(newdata.Data.Segments[0].Stats.Rankscore.Value)),
 					rpup:         strconv.Itoa(rpchange),
@@ -25,7 +25,7 @@ func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
 					killupsend:   "0",
 					damageupsend: "0",
 					winupsend:    "0",
-					date:         GetTime().Format("2006/01/02"),
+					date:         getTime().Format("2006/01/02"),
 				}
 				return rkdw
 			}
@@ -38,7 +38,7 @@ func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
 			killchangesend := int(newdata.Data.Segments[i].Stats.Kills.Value) - (beforedata.LastMadeKills)
 			damagechangesend := int(newdata.Data.Segments[i].Stats.Damage.Value) - (beforedata.LastMadeDamage)
 			winchangesend := int(newdata.Data.Segments[i].Stats.Wins.Value) - (beforedata.LastMadeWins)
-			rkdw := RKDW{
+			rkdw := valuesChange{
 				rankname:     newdata.Data.Segments[0].Stats.Rankscore.Rankmetadata.Rankname,
 				rp:           strconv.Itoa(int(newdata.Data.Segments[0].Stats.Rankscore.Value)),
 				rpup:         strconv.Itoa(rpchange),
@@ -52,7 +52,7 @@ func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
 				killupsend:   strconv.Itoa(killchangesend),
 				damageupsend: strconv.Itoa(damagechangesend),
 				winupsend:    strconv.Itoa(winchangesend),
-				date:         GetTime().Format("2006/01/02"),
+				date:         getTime().Format("2006/01/02"),
 			}
 			return rkdw
 		}
@@ -60,7 +60,7 @@ func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
 
 	//選択したレジェンドのデータがなかったときの処理
 	rpchange := int(newdata.Data.Segments[0].Stats.Rankscore.Value) - (beforedata.Rp)
-	rkdw := RKDW{
+	rkdw := valuesChange{
 		rankname: newdata.Data.Segments[0].Stats.Rankscore.Rankmetadata.Rankname,
 		rp:       strconv.Itoa(int(newdata.Data.Segments[0].Stats.Rankscore.Value)),
 		rpup:     strconv.Itoa(rpchange),
@@ -74,7 +74,7 @@ func CalculateValues(newdata ApexLawData, beforedata database.UserData) RKDW {
 	return rkdw
 }
 
-func CalculateNextRank(r RKDW) int {
+func calculateNextRank(r valuesChange) int {
 	val, _ := strconv.Atoi(r.rp)
 	if val < 300 {
 		return 300 - val

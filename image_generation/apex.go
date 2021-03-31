@@ -10,18 +10,13 @@ import (
 
 const baseURL = "https://public-api.tracker.gg/v2/apex/standard/profile/"
 
-type APIClient struct {
-	key      string
-	platform string
-	id       string
+type apiClient struct {
+	Key      string
+	Platform string
+	Id       string
 }
 
-func New(key, platform, id string) *APIClient {
-	apiClient := &APIClient{key, platform, id}
-	return apiClient
-}
-
-type ApexLawData struct {
+type apexLawData struct {
 	Data struct {
 		PlatformInfo struct {
 			AvatarURL string `json:"avatarUrl"`
@@ -51,11 +46,15 @@ type ApexLawData struct {
 	} `json:"data"`
 }
 
-func GetApexData(platform, id string) []ApexLawData {
-	api := New(config.Config.Apikey, platform, id)
-	url := baseURL + api.platform + "/" + api.id
+func getApexData(platform, id string) []apexLawData {
+	api := apiClient{
+		Key:      config.Config.Apikey,
+		Platform: platform,
+		Id:       id,
+	}
+	url := baseURL + api.Platform + "/" + api.Id
 	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Set("TRN-Api-Key", api.key)
+	req.Header.Set("TRN-Api-Key", api.Key)
 	client := new(http.Client)
 	resp, _ := client.Do(req)
 	defer resp.Body.Close()
@@ -67,7 +66,7 @@ func GetApexData(platform, id string) []ApexLawData {
 	if err != nil {
 		log.Fatal(err)
 	}
-	var data []ApexLawData
+	var data []apexLawData
 	err = json.Unmarshal([]byte("["+string(bytes)+"]"), &data)
 	if err != nil {
 		log.Printf("file=apex.go/72 action=ummmarshal error=%v", err)

@@ -29,8 +29,8 @@ func init() {
 }
 
 func main() {
-	database.DbInit()
-	SetSchedule()
+	database.Init()
+	setSchedule()
 
 	e := echo.New()
 
@@ -47,7 +47,7 @@ func main() {
 	e.Use(session.Sessions("twipex_session", store))
 	e.Use(middleware.Recover())
 
-	cfg, err := ini.Load("app.config")
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		log.Printf("file=twitter/main.go/41 action=loadconfig error=%v", err)
 	}

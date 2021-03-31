@@ -6,7 +6,7 @@ import (
 	"github.com/carlescere/scheduler"
 )
 
-func SetSchedule() {
+func setSchedule() {
 	jobam0 := func() { image_generation.PostImage("am0") }
 	jobam3 := func() { image_generation.PostImage("am3") }
 	jobam6 := func() { image_generation.PostImage("am6") }

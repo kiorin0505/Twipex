@@ -16,8 +16,8 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-func GetConnect() *oauth.Client {
-	cfg, err := ini.Load("app.config")
+func getConnect() *oauth.Client {
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		log.Printf("file=twitter/main.go/13 action=loadcondig error=%v", err)
 	}
@@ -32,8 +32,8 @@ func GetConnect() *oauth.Client {
 	}
 }
 
-func GetAccessToken(rt *oauth.Credentials, oauthVerifier string) (*oauth.Credentials, error) {
-	oc := GetConnect()
+func getAccessToken(rt *oauth.Credentials, oauthVerifier string) (*oauth.Credentials, error) {
+	oc := getConnect()
 	at, _, err := oc.RequestToken(nil, rt, oauthVerifier)
 
 	return at, err
@@ -44,8 +44,9 @@ type Data struct {
 	name string
 }
 
-func GetSelfData(token, secret string) Data {
-	cfg, err := ini.Load("app.config")
+func getSelfData(token, secret string) Data {
+
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		log.Printf("file=twitter/main.go/41 action=loadconfig error=%v", err)
 	}
@@ -62,7 +63,7 @@ func GetSelfData(token, secret string) Data {
 }
 
 func Oauth(c echo.Context) error {
-	config := GetConnect()
+	config := getConnect()
 	rt, err := config.RequestTemporaryCredentials(nil, "http://localhost:8080/callback", nil)
 	if err != nil {
 		log.Printf("file=twitter/oauth.go/13 action=requestcredential error=%v", err)
@@ -80,7 +81,7 @@ func Oauth(c echo.Context) error {
 func Callback(c echo.Context) error {
 	session := session.Default(c)
 	secret := c.QueryParam("oauth_verifier")
-	at, err := GetAccessToken(
+	at, err := getAccessToken(
 		&oauth.Credentials{
 			Token:  session.Get("request_token").(string),
 			Secret: session.Get("request_token_secret").(string),
@@ -88,20 +89,20 @@ func Callback(c echo.Context) error {
 		secret,
 	)
 	if err != nil {
-		//log.Printf("file=callback.go/24 action=GetAccessToken error=%v", err)
+		//log.Printf("file=callback.go/24 action=getAccessToken error=%v", err)
 		return c.Redirect(http.StatusFound, "/")
 	}
 
-	twidata := GetSelfData(at.Token, at.Secret)
+	twidata := getSelfData(at.Token, at.Secret)
 
 	session.Set("twitter_id", twidata.id)
 	session.Set("twitter_name", twidata.name)
 
 	session.Save()
-	if database.DbCheck(twidata.id) {
+	if database.Check(twidata.id) {
 		return c.Redirect(http.StatusFound, "/")
 	}
-	database.DbInitInsert(at.Token, at.Secret, twidata.id, twidata.name)
+	database.InitInsert(at.Token, at.Secret, twidata.id, twidata.name)
 	return c.Redirect(http.StatusFound, "/setting")
 }
 
@@ -109,7 +110,7 @@ func PostTweet(db database.UserData) error {
 
 	content := db.UserId + "'s " + db.Legend + " Status made by #Twipex  For more details https://twipex.herokuapp.com/data/" + db.AccountId
 
-	cfg, err := ini.Load("app.config")
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		log.Printf("file=twitter/post.go/19 action=loadconfig error=%v", err)
 	}
