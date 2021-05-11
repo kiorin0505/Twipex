@@ -40,7 +40,7 @@ type apexLawData struct {
 				} `json:"rankScore"`
 				Wins struct {
 					Value float32 `json:"value"`
-				} `json:"season7Wins"`
+				} `json:"season9Wins"`
 			} `json:"stats"`
 		} `json:"segments"`
 	} `json:"data"`
